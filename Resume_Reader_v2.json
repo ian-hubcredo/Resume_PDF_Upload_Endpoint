@@ -1,0 +1,121 @@
+{
+  "name": "Resume Reader v2",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pdf.co/v1/file/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "<REDACTED_EMAIL>_<PDFCO_API_KEY>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "file"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        0
+      ],
+      "id": "f2dbcff9-2c2b-454f-9ecb-574a18961c47",
+      "name": "PDF.co"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "5cfd0c1b-634b-4f95-ab2d-b60d392477a7",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -352,
+        0
+      ],
+      "id": "9637f3f2-57fd-4c28-bf15-49b90ce28113",
+      "name": "Webhook",
+      "webhookId": "<REDACTED_WEBHOOK_ID>"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        96,
+        0
+      ],
+      "id": "a9a5a48e-b045-45a5-addd-d52ce9138485",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## PDF.co API Key\n\n`<REDACTED_EMAIL>_<PDFCO_API_KEY>`\n",
+        "height": 176,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        -256
+      ],
+      "id": "98808c53-47d0-4c94-9428-37e8c5d91d8a",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "PDF.co",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF.co": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": null
+}
